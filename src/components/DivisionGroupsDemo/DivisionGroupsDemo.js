@@ -61,15 +61,16 @@ function DivisionGroupsDemo({
           </div>
         </div>
       </AnimatePresence>
-
-      {includeRemainderArea && (
-        <div className={styles.remainderArea}>
-          <p className={styles.remainderHeading}>Remainder Area</p>
-          {range(remainder).map((index) => {
-            return <div key={index} className={styles.item} />;
-          })}
-        </div>
-      )}
+      <AnimatePresence>
+        {includeRemainderArea && (
+          <div className={styles.remainderArea}>
+            <p className={styles.remainderHeading}>Remainder Area</p>
+            {range(remainder).map((index) => {
+              return <motion.div layout key={index} className={styles.item} />;
+            })}
+          </div>
+        )}
+      </AnimatePresence>
 
       <Equation
         dividend={numOfItems}
