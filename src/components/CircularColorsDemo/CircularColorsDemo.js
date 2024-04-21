@@ -7,6 +7,7 @@ import Card from "@/components/Card";
 import VisuallyHidden from "@/components/VisuallyHidden";
 
 import styles from "./CircularColorsDemo.module.css";
+import { AnimatePresence, motion } from "framer-motion";
 
 const COLORS = [
   { label: "red", value: "hsl(348deg 100% 60%)" },
@@ -25,7 +26,7 @@ function CircularColorsDemo() {
     return COLORS[colorIndex];
   }
 
-  function startTimeElapseCount() {
+  function startTimeElapsedCount() {
     const newIntervalId = setInterval(() => {
       setTimeElapsed((previousTimeElapse) => previousTimeElapse + 1);
     }, 1000);
@@ -33,13 +34,13 @@ function CircularColorsDemo() {
     setIsPlaying(true);
   }
 
-  function pauseTimeElapseCount() {
+  function pauseTimeElapsedCount() {
     setIsPlaying(false);
     clearInterval(intervalID);
     setTimeElapsed((previousTimeElapse) => previousTimeElapse);
   }
 
-  function resetTimeElapseConut() {
+  function resetTimeElapsedCount() {
     clearInterval(intervalID);
     setTimeElapsed(0);
     setIsPlaying(false);
@@ -57,20 +58,22 @@ function CircularColorsDemo() {
           const isSelected = color.value === selectedColor.value;
 
           return (
-            <li className={styles.color} key={index}>
-              {isSelected && <div className={styles.selectedColorOutline} />}
-              <div
-                className={clsx(
-                  styles.colorBox,
-                  isSelected && styles.selectedColorBox
-                )}
-                style={{
-                  backgroundColor: color.value,
-                }}
-              >
-                <VisuallyHidden>{color.label}</VisuallyHidden>
-              </div>
-            </li>
+            <AnimatePresence key={index}>
+              <motion.li layout className={styles.color}>
+                {isSelected && <div className={styles.selectedColorOutline} />}
+                <div
+                  className={clsx(
+                    styles.colorBox,
+                    isSelected && styles.selectedColorBox
+                  )}
+                  style={{
+                    backgroundColor: color.value,
+                  }}
+                >
+                  <VisuallyHidden>{color.label}</VisuallyHidden>
+                </div>
+              </motion.li>
+            </AnimatePresence>
           );
         })}
       </ul>
@@ -81,13 +84,14 @@ function CircularColorsDemo() {
           <dd>{timeElapsed}</dd>
         </dl>
         <div className={styles.actions}>
-          <button>
-            {!isPlaying && <Play onClick={startTimeElapseCount} />}
-            {isPlaying && <Pause onClick={pauseTimeElapseCount} />}
+          <button
+            onClick={!isPlaying ? startTimeElapsedCount : pauseTimeElapsedCount}
+          >
+            {!isPlaying ? <Play /> : <Pause />}
             <VisuallyHidden>Play</VisuallyHidden>
           </button>
           <button>
-            <RotateCcw onClick={resetTimeElapseConut} />
+            <RotateCcw onClick={resetTimeElapsedCount} />
             <VisuallyHidden>Reset</VisuallyHidden>
           </button>
         </div>
