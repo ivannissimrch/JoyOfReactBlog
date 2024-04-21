@@ -48,7 +48,7 @@ function CircularColorsDemo() {
   useEffect(() => {
     const colorSelected = getCurrentColor(timeElapsed);
     setSelectedColor(colorSelected);
-  }, [timeElapsed, intervalID]);
+  }, [timeElapsed]);
 
   return (
     <Card as="section" className={styles.wrapper}>
