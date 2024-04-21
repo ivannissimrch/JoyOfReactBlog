@@ -37,7 +37,6 @@ function CircularColorsDemo() {
   function pauseTimeElapsedCount() {
     setIsPlaying(false);
     clearInterval(intervalID);
-    setTimeElapsed((previousTimeElapse) => previousTimeElapse);
   }
 
   function resetTimeElapsedCount() {
