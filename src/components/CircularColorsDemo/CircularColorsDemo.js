@@ -48,18 +48,28 @@ function CircularColorsDemo() {
   useEffect(() => {
     const colorSelected = getCurrentColor(timeElapsed);
     setSelectedColor(colorSelected);
-  }, [timeElapsed]);
+  }, [timeElapsed, intervalID]);
 
   return (
     <Card as="section" className={styles.wrapper}>
-      <ul className={styles.colorsWrapper}>
-        {COLORS.map((color, index) => {
-          const isSelected = color.value === selectedColor.value;
+      <AnimatePresence>
+        <ul className={styles.colorsWrapper}>
+          {COLORS.map((color, index) => {
+            const isSelected = color.value === selectedColor.value;
 
-          return (
-            <AnimatePresence key={index}>
-              <motion.li layout className={styles.color}>
-                {isSelected && <div className={styles.selectedColorOutline} />}
+            return (
+              <li key={index} className={styles.color}>
+                {isSelected && (
+                  <motion.div
+                    layout
+                    animate={{ opacity: 0.6 }}
+                    transition={{
+                      opacity: { ease: "linear" },
+                      layout: { duration: 0.1 },
+                    }}
+                    className={styles.selectedColorOutline}
+                  />
+                )}
                 <div
                   className={clsx(
                     styles.colorBox,
@@ -71,11 +81,11 @@ function CircularColorsDemo() {
                 >
                   <VisuallyHidden>{color.label}</VisuallyHidden>
                 </div>
-              </motion.li>
-            </AnimatePresence>
-          );
-        })}
-      </ul>
+              </li>
+            );
+          })}
+        </ul>
+      </AnimatePresence>
 
       <div className={styles.timeWrapper}>
         <dl className={styles.timeDisplay}>
