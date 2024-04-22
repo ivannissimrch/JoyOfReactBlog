@@ -19,12 +19,8 @@ function CircularColorsDemo() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [intervalID, setIntervalID] = useState(null);
-  const [selectedColor, setSelectedColor] = useState(COLORS[0]);
 
-  function getCurrentColor(timeElapsed) {
-    const colorIndex = timeElapsed % COLORS.length;
-    return COLORS[colorIndex];
-  }
+  const selectedColor = COLORS[timeElapsed % COLORS.length];
 
   function startTimeElapsedCount() {
     const newIntervalId = setInterval(() => {
@@ -44,11 +40,6 @@ function CircularColorsDemo() {
     setTimeElapsed(0);
     setIsPlaying(false);
   }
-
-  useEffect(() => {
-    const colorSelected = getCurrentColor(timeElapsed);
-    setSelectedColor(colorSelected);
-  }, [timeElapsed]);
 
   return (
     <Card as="section" className={styles.wrapper}>
