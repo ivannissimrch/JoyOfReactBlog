@@ -1,5 +1,4 @@
 import React from "react";
-import { v4 as uuidv4 } from "uuid";
 import BlogSummaryCard from "@/components/BlogSummaryCard";
 import styles from "./homepage.module.css";
 import { getBlogPostList } from "@/helpers/file-helpers";
@@ -20,7 +19,7 @@ async function Home() {
         const { slug, title, abstract, publishedOn } = blog;
         return (
           <BlogSummaryCard
-            key={uuidv4()}
+            key={`${title}${publishedOn}`}
             slug={slug}
             title={title}
             abstract={abstract}
