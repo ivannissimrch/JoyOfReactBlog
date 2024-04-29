@@ -2,29 +2,32 @@ import React from "react";
 import BlogHero from "@/components/BlogHero";
 import styles from "./postSlug.module.css";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import { loadBlogPost } from "@/helpers/file-helpers";
+import { getBlogPostList, loadBlogPost } from "@/helpers/file-helpers";
 import CodeSnippet from "@/components/CodeSnippet";
 import dynamic from "next/dynamic";
-const DivisionGroupsDemo = dynamic(
-  () => import("/src/components/DivisionGroupsDemo/DivisionGroupsDemo.js"),
-  {
-    loading: () => <p>Loading...</p>,
-  }
+import { notFound } from "next/navigation";
+const DivisionGroupsDemo = dynamic(() =>
+  import("/src/components/DivisionGroupsDemo/DivisionGroupsDemo.js")
 );
-const CircularColorsDemo = dynamic(
-  () => import("/src/components/CircularColorsDemo/CircularColorsDemo.js"),
-  {
-    loading: () => <p>Loading...</p>,
-  }
+const CircularColorsDemo = dynamic(() =>
+  import("/src/components/CircularColorsDemo/CircularColorsDemo.js")
 );
 
 export async function generateMetadata({ params }) {
+  const postList = await getBlogPostList();
+
+  const validLink = postList.some((post) => {
+    return post.slug === params.postSlug;
+  });
+  if (validLink === false) {
+    notFound();
+  }
+
   const post = await loadBlogPost(params.postSlug);
   const {
     content,
     frontmatter: { title, abstract },
   } = post;
-
   return {
     title: title,
     name: abstract,
@@ -33,6 +36,15 @@ export async function generateMetadata({ params }) {
 }
 
 async function BlogPost({ params }) {
+  const postList = await getBlogPostList();
+
+  const validLink = postList.some((post) => {
+    return post.slug === params.postSlug;
+  });
+  if (validLink === false) {
+    notFound();
+  }
+
   const post = await loadBlogPost(params.postSlug);
   const {
     content,
