@@ -20,7 +20,7 @@ export async function generateMetadata({ params }) {
     return post.slug === params.postSlug;
   });
   if (validLink === false) {
-    notFound();
+    return;
   }
 
   const post = await loadBlogPost(params.postSlug);
